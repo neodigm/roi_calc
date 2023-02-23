@@ -321,6 +321,19 @@ data-n55-wired4sound-click="7"
     <div class="h-center">
         <h2 id="roic-asses__caption--fb" class="hd3"></h2>
 
+        <section class="pfmf-grid pfmf-grid__100">
+            <div>
+                <article>
+                    <h2 class="hd4 h-center">Cost Per Lead (CPL)</h3>
+                    <hr style="height: 1px; background-color: #cfcfcf; border: none;">
+                    <neodigm-kpi id="kpi-ctr_src" data-n55-kpi data-n55-kpi-percent="false"
+                    data-n55-kpi-size="small" data-n55-flash-theme="success" data-n55-theme="success"
+                    ><h5><kpi-fb id="kpi-fb-cpl" style="font-size: 44px;">$0</kpi-fb></h5><h6>Monthly CPL</h6>
+                    </neodigm-kpi>
+                </article>
+            </div>
+        </section>
+
         <section class="pfmf-grid pfmf-grid__50_50">
             <div>
                 <article>
@@ -537,14 +550,13 @@ function ROIFormVal( nPage, aIds ){
                 }
             break;
             case 2:
-                debugger
                 elAdBudget = document.querySelector( aIds[0] )
                 elLeadsPerMonth = document.querySelector( aIds[1] )
                 if( elAdBudget && elLeadsPerMonth ){
                     if( !elAdBudget.value ){
                         isVal = false; valMsg = "Ad Budget is|Required";
                     }
-                    if( !elLeadsPerMonth.value ){
+                    if( !elLeadsPerMonth.value || elLeadsPerMonth.value == "0" ){
                         isVal = false; valMsg = "Leads Per Month is|Required";
                     }
                     if( Number.isNaN( elAdBudget ) ){
@@ -578,6 +590,15 @@ setTimeout(function(){
             let jsnWS = JSON.parse( jWS )
             if( sIndy && jsnWS ){
                 oIndy = jsnWS.filter( ( oI )=>{ return ( oI.title == sIndy ); } )[0]
+
+                let elAdBudget = document.querySelector( "#roic_ad_budget" )
+                let elLeadsPerMonth = document.querySelector( "#roic_ad_leads" )
+                elAdBudget = elAdBudget.value.replace("$","")
+                elLeadsPerMonth = elLeadsPerMonth.value
+                if( elAdBudget && elLeadsPerMonth ){
+                    document.getElementById( "kpi-fb-cpl" ).textContent = "$" + Math.round(( ( elAdBudget / elLeadsPerMonth ) + Number.EPSILON) * 100) / 100
+                }
+
                 document.getElementById( "kpi-fb-ctr_src" ).textContent = oIndy.ctr_src
                 document.getElementById( "kpi-fb-ctr_gdn" ).textContent = oIndy.ctr_gdn
 
@@ -589,6 +610,7 @@ setTimeout(function(){
 
                 document.getElementById( "kpi-fb-cpa_src" ).textContent = oIndy.cpa_src
                 document.getElementById( "kpi-fb-cpa_gdn" ).textContent = oIndy.cpa_gdn
+
             }
             document.querySelector("#roic-asses__caption--fb").textContent = sIndy + " " + sYear
         }, "js-roic-asses-id")
