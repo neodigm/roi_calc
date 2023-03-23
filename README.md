@@ -1,7 +1,7 @@
 # roi_calc
 ROI Calculator
 
-Note: This is now an (installable app)[https://www.thescottkrause.com/devtoys/roi_tco_calc_lead_accelerator/].
+Note: This is now an [installable app](https://www.thescottkrause.com/devtoys/roi_tco_calc_lead_accelerator/).
 
 
 ---
